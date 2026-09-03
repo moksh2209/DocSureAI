@@ -1,0 +1,8 @@
+# Core Computer Vision
+numpy==2.3.5
+opencv-python==5.0.0.93
+
+# OCR
+easyocr==1.7.2
+torch==2.13.0
+torchvision==0.28.0

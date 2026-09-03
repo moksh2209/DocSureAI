@@ -1,0 +1,25 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Virtual environments
+.venv/
+venv/
+env/
+ENV/
+
+# Environment variables
+.env
+
+# Uploaded/generated files
+uploaded/
+generated/
+uploads/
+data/
+
+# IDE-specific temporary files
+.idea/
+.vscode/
+*.swp
+*.swo
