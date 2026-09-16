@@ -17,48 +17,6 @@ def load_and_validate_image(image_path: str | Path):
         
     return image, None
 
-def test_image_processing(image_path: str | Path, output_dir: str | Path) -> bool:
-    """
-    Reads an image, validates it, prints its properties, and saves a copy.
-    """
-    out_dir = Path(output_dir)
-    img_path = Path(image_path)
-    print(f"--- Starting Image Processing Test ---")
-    
-    image, error_msg = load_and_validate_image(img_path)
-    if error_msg:
-        print(f"Error: {error_msg}")
-        return False
-        
-    print(f"File found and loaded successfully: {img_path.absolute()}")
-    
-    # Get image info
-    height, width = image.shape[:2]
-    channels = image.shape[2] if len(image.shape) == 3 else 1
-    
-    print(f"Image width: {width} pixels")
-    print(f"Image height: {height} pixels")
-    print(f"Number of channels: {channels}")
-    print(f"Image shape: {image.shape}")
-    
-    # Ensure output directory exists
-    try:
-        out_dir.mkdir(parents=True, exist_ok=True)
-    except Exception as e:
-        print(f"Error: Failed to create output directory {out_dir.absolute()}: {e}")
-        return False
-        
-    # Save a copy
-    output_path = out_dir / img_path.name
-    success = cv2.imwrite(str(output_path), image)
-    
-    if not success:
-        print(f"Error: Failed to save the image to {output_path.absolute()}")
-        return False
-        
-    print(f"Successfully saved a copy to: {output_path.absolute()}")
-    print(f"--- Image Processing Test Completed Successfully ---")
-    return True
 
 def preprocess_document(image_path: str | Path, output_dir: str | Path, 
                         blur_kernel: tuple = (5, 5), 

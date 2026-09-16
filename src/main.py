@@ -1,6 +1,11 @@
 from pathlib import Path
+import json
 from core.image_processor import preprocess_document, detect_document_boundary, perspective_correction, enhance_document
 from core.quality_assessment import assess_document_quality
+from core.ocr_engine import initialize_ocr_engine, perform_ocr
+from core.ocr_analysis import analyze_ocr_results, print_comparison_table, save_analysis_report
+from core.document_structure import analyze_document_structure, save_structure_report
+from core.redaction import run_sensitive_data_detection, run_visual_redaction
 
 def main():
     print("DocScan project initialized successfully.")
@@ -53,13 +58,6 @@ def main():
         return
         
     # Step 8: OCR All Candidate Versions
-    from core.ocr_engine import initialize_ocr_engine, perform_ocr
-    from core.ocr_analysis import (
-        analyze_ocr_results,
-        print_comparison_table,
-        save_analysis_report,
-    )
-    import json
 
     print("\n--- Starting Step 8: Multi-Version OCR Evaluation ---")
     ocr_engine = initialize_ocr_engine()
@@ -182,8 +180,6 @@ def main():
     print("\n--- Starting Step 10: Structured Document Analysis ---")
 
     try:
-        from core.document_structure import analyze_document_structure, save_structure_report
-
         structure = analyze_document_structure(text_path)
 
         if structure is None:
@@ -211,7 +207,6 @@ def main():
     # ------------------------------------------------------------------
     print("\n--- Starting Step 11A: Sensitive Information Detection ---")
     try:
-        from core.redaction import run_sensitive_data_detection
         success_11a = run_sensitive_data_detection(output_dir, ocr_engine)
         if success_11a:
             print("\nPipeline Step 11A (Sensitive Information Detection) Passed.")
@@ -225,7 +220,6 @@ def main():
     # Step 11B: Visual Redaction
     # ------------------------------------------------------------------
     try:
-        from core.redaction import run_visual_redaction
         success_11b = run_visual_redaction(output_dir)
         if success_11b:
             print("\nPipeline Step 11B (Visual Redaction) Passed.")

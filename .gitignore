@@ -16,7 +16,7 @@ ENV/
 uploaded/
 generated/
 uploads/
-data/
+data/output/
 
 # IDE-specific temporary files
 .idea/
