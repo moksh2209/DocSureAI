@@ -25,7 +25,8 @@ INPUT_DIR = DATA_DIR / "input"
 OUTPUT_DIR = DATA_DIR / "output"
 INPUT_FILE = INPUT_DIR / "document.jpg"
 
-# Mount output directory for static file serving
+# Ensure output directory exists for static file serving
+OUTPUT_DIR.mkdir(parents=True, exist_ok=True)
 app.mount("/outputs", StaticFiles(directory=str(OUTPUT_DIR)), name="outputs")
 
 # Global processing lock (single-user constraint)
