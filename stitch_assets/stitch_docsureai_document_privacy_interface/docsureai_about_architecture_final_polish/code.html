@@ -1,0 +1,470 @@
+<!DOCTYPE html>
+
+<html lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700&amp;family=Inter:wght@400;500;600&amp;family=JetBrains+Mono:wght@400;500;600&amp;display=swap" rel="stylesheet"/>
+<style>
+    @layer base {
+      html, body { margin: 0; padding: 0; }
+      body { overscroll-behavior: none; }
+    }
+    ::-webkit-scrollbar { display: none; }
+  </style>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+    tailwind.config = {
+      darkMode: "class",
+      theme: {
+        extend: {
+          colors: {
+            "on-surface": "#131b2e",
+            "surface-bright": "#faf8ff",
+            "outline-variant": "#c4c5d5",
+            "primary-container": "#1e40af",
+            "surface-container-low": "#f2f3ff",
+            "on-secondary-container": "#006f67",
+            "surface-variant": "#dae2fd",
+            "tertiary-fixed": "#85f8c4",
+            "on-primary": "#ffffff",
+            "on-tertiary": "#ffffff",
+            "on-error-container": "#93000a",
+            "error": "#ba1a1a",
+            "inverse-primary": "#b8c4ff",
+            "on-primary-container": "#a8b8ff",
+            "on-primary-fixed-variant": "#173bab",
+            "on-tertiary-fixed-variant": "#005137",
+            "primary": "#00288e",
+            "secondary-fixed-dim": "#80d5cb",
+            "on-tertiary-container": "#5bcf9e",
+            "error-container": "#ffdad6",
+            "surface": "#faf8ff",
+            "outline": "#757684",
+            "surface-container-highest": "#dae2fd",
+            "on-surface-variant": "#444653",
+            "on-background": "#131b2e",
+            "tertiary": "#003d28",
+            "on-primary-fixed": "#001453",
+            "on-secondary-fixed-variant": "#00504a",
+            "secondary": "#006a63",
+            "surface-dim": "#d2d9f4",
+            "on-tertiary-fixed": "#002114",
+            "secondary-container": "#99efe5",
+            "surface-container": "#eaedff",
+            "surface-tint": "#3755c3",
+            "on-secondary-fixed": "#00201d",
+            "background": "#faf8ff",
+            "secondary-fixed": "#9cf2e8",
+            "inverse-surface": "#283044",
+            "on-error": "#ffffff",
+            "surface-container-high": "#e2e7ff",
+            "primary-fixed": "#dde1ff",
+            "tertiary-container": "#00563a",
+            "primary-fixed-dim": "#b8c4ff",
+            "on-secondary": "#ffffff",
+            "tertiary-fixed-dim": "#68dba9",
+            "surface-container-lowest": "#ffffff",
+            "inverse-on-surface": "#eef0ff"
+          },
+          fontFamily: {
+            "display": ["Geist", "sans-serif"],
+            "headline-lg": ["Geist", "sans-serif"],
+            "headline-md": ["Geist", "sans-serif"],
+            "headline-sm": ["Geist", "sans-serif"],
+            "title-md": ["Inter", "sans-serif"],
+            "body-lg": ["Inter", "sans-serif"],
+            "body-md": ["Inter", "sans-serif"],
+            "body-sm": ["Inter", "sans-serif"],
+            "label-md": ["JetBrains Mono", "monospace"],
+            "label-sm": ["JetBrains Mono", "monospace"]
+          }
+        }
+      }
+    };
+  </script>
+</head>
+<body class="bg-background font-body-md text-on-surface min-h-screen flex flex-col antialiased selection:bg-primary-fixed selection:text-primary">
+<!-- Top Navigation Bar -->
+<header class="fixed top-0 left-0 right-0 w-full z-50 bg-surface-container-lowest/90 backdrop-blur-md border-b border-outline-variant/30">
+<div class="h-16 w-full px-6 max-w-7xl mx-auto flex items-center justify-between">
+<!-- Brand Logo -->
+<div class="flex items-center gap-3">
+<div class="w-8 h-8 rounded-lg bg-primary-container flex items-center justify-center text-on-primary shadow-sm">
+<svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewbox="0 0 24 24">
+<path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path>
+<path d="M9 12l2 2 4-4"></path>
+</svg>
+</div>
+<div class="flex items-baseline gap-1.5">
+<span class="font-headline-sm font-semibold tracking-tight text-on-surface">DOCSUREAI</span>
+<span class="font-label-sm text-outline px-1.5 py-0.5 rounded bg-surface-container-high text-[11px]">v1.0</span>
+</div>
+</div>
+<!-- Center Navigation Links -->
+<nav class="flex items-center gap-8">
+<a class="text-on-surface-variant hover:text-on-surface font-title-md text-[15px] transition-colors py-5 border-b-2 border-transparent" data-path="scanner" href="#">Scanner</a>
+<a aria-current="page" class="text-primary font-semibold font-title-md text-[15px] py-5 border-b-2 border-primary" data-path="about" href="#">About</a>
+</nav>
+<!-- Right Indicator -->
+<div class="flex items-center gap-3">
+<div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-secondary-container/40 border border-secondary/20 text-on-secondary-container font-label-sm text-[11px] font-medium">
+<span class="w-2 h-2 rounded-full bg-secondary"></span>
+<span>Privacy Protected</span>
+</div>
+</div>
+</div>
+</header>
+<!-- Main Content -->
+<main class="w-full flex-1 pt-16 bg-background">
+<div class="max-w-7xl mx-auto px-6 py-10">
+<div class="flex flex-col w-full gap-12">
+<!-- Header Section -->
+<section class="relative overflow-hidden rounded-2xl bg-surface-container-lowest border border-outline-variant/30 p-8 sm:p-10">
+<div class="max-w-3xl flex flex-col gap-4">
+<h1 class="font-display text-4xl sm:text-5xl font-semibold tracking-tight text-on-surface">
+              About DocSureAI
+            </h1>
+<p class="font-body-lg text-lg text-on-surface-variant leading-relaxed">
+              DocSureAI is a computer-vision and OCR based document processing application that transforms document images into structured information while automatically detecting and visually redacting sensitive information.
+            </p>
+<div class="pt-2">
+<a class="inline-flex items-center justify-center gap-2 px-6 py-2.5 rounded-lg bg-primary-container text-on-primary font-title-md hover:bg-primary transition-colors shadow-sm" data-path="scanner" href="#">
+<span>Launch Scanner →</span>
+</a>
+</div>
+</div>
+</section>
+<!-- Core Pipeline (10 Discrete Stages) -->
+<section class="flex flex-col gap-6">
+<div class="flex items-center justify-between border-b border-outline-variant/30 pb-3">
+<div>
+<h2 class="font-label-md uppercase tracking-wider text-xs font-semibold text-primary">CORE PIPELINE</h2>
+<p class="font-headline-md text-2xl font-semibold text-on-surface mt-1">Ten-Stage Processing Sequence</p>
+</div>
+<span class="font-label-sm text-xs text-outline px-2.5 py-1 rounded bg-surface-container">Stages 01 – 10</span>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-4">
+<!-- Stage 01 -->
+<div class="bg-surface-container-lowest p-5 rounded-xl border border-outline-variant/30 flex flex-col justify-between hover:border-outline transition-colors">
+<div>
+<div class="flex items-center justify-between mb-3">
+<span class="font-label-sm text-xs text-primary font-bold">STAGE 01</span>
+<div class="w-7 h-7 rounded-md bg-surface-container flex items-center justify-center text-primary">
+<svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewbox="0 0 24 24"><path d="M12 2v4m0 12v4M4.93 4.93l2.83 2.83m8.48 8.48l2.83 2.83M2 12h4m12 0h4M4.93 19.07l2.83-2.83m8.48-8.48l2.83-2.83"></path></svg>
+</div>
+</div>
+<h3 class="font-headline-sm text-base font-semibold text-on-surface">Image Preprocessing</h3>
+<p class="font-body-sm text-xs text-on-surface-variant mt-2 leading-normal">
+                  Grayscale conversion and bilateral filtering suppress noise while keeping document edges intact.
+                </p>
+</div>
+</div>
+<!-- Stage 02 -->
+<div class="bg-surface-container-lowest p-5 rounded-xl border border-outline-variant/30 flex flex-col justify-between hover:border-outline transition-colors">
+<div>
+<div class="flex items-center justify-between mb-3">
+<span class="font-label-sm text-xs text-primary font-bold">STAGE 02</span>
+<div class="w-7 h-7 rounded-md bg-surface-container flex items-center justify-center text-primary">
+<svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewbox="0 0 24 24"><path d="M3 7V5a2 2 0 0 1 2-2h2m10 0h2a2 2 0 0 1 2 2v2m0 10v2a2 2 0 0 1-2 2h-2M7 21H5a2 2 0 0 1-2-2v-2"></path></svg>
+</div>
+</div>
+<h3 class="font-headline-sm text-base font-semibold text-on-surface">Document Boundary Detection</h3>
+<p class="font-body-sm text-xs text-on-surface-variant mt-2 leading-normal">
+                  Canny edge detection and contour approximation determine the outer quadrangle vertices of the page.
+                </p>
+</div>
+</div>
+<!-- Stage 03 -->
+<div class="bg-surface-container-lowest p-5 rounded-xl border border-outline-variant/30 flex flex-col justify-between hover:border-outline transition-colors">
+<div>
+<div class="flex items-center justify-between mb-3">
+<span class="font-label-sm text-xs text-primary font-bold">STAGE 03</span>
+<div class="w-7 h-7 rounded-md bg-surface-container flex items-center justify-center text-primary">
+<svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewbox="0 0 24 24"><path d="M4 14v6a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-6M20 10V4a2 2 0 0 0-2-2H6a2 2 0 0 0-2 2v6"></path><path d="M12 2v20"></path></svg>
+</div>
+</div>
+<h3 class="font-headline-sm text-base font-semibold text-on-surface">Perspective Correction</h3>
+<p class="font-body-sm text-xs text-on-surface-variant mt-2 leading-normal">
+                  Homography perspective rectification unwarps skewed document angles into a flat top-down surface.
+                </p>
+</div>
+</div>
+<!-- Stage 04 -->
+<div class="bg-surface-container-lowest p-5 rounded-xl border border-outline-variant/30 flex flex-col justify-between hover:border-outline transition-colors">
+<div>
+<div class="flex items-center justify-between mb-3">
+<span class="font-label-sm text-xs text-primary font-bold">STAGE 04</span>
+<div class="w-7 h-7 rounded-md bg-surface-container flex items-center justify-center text-primary">
+<svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewbox="0 0 24 24"><circle cx="12" cy="12" r="10"></circle><path d="M12 2a10 10 0 0 1 0 20z"></path></svg>
+</div>
+</div>
+<h3 class="font-headline-sm text-base font-semibold text-on-surface">Image Enhancement</h3>
+<p class="font-body-sm text-xs text-on-surface-variant mt-2 leading-normal">
+                  Adaptive histogram equalization (CLAHE) normalizes uneven scan lighting and boosts character contrast.
+                </p>
+</div>
+</div>
+<!-- Stage 05 -->
+<div class="bg-surface-container-lowest p-5 rounded-xl border border-outline-variant/30 flex flex-col justify-between hover:border-outline transition-colors">
+<div>
+<div class="flex items-center justify-between mb-3">
+<span class="font-label-sm text-xs text-primary font-bold">STAGE 05</span>
+<div class="w-7 h-7 rounded-md bg-surface-container flex items-center justify-center text-primary">
+<svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewbox="0 0 24 24"><circle cx="11" cy="11" r="8"></circle><path d="m21 21-4.35-4.35"></path><path d="M11 8v6M8 11h6"></path></svg>
+</div>
+</div>
+<h3 class="font-headline-sm text-base font-semibold text-on-surface">Document Quality Assessment</h3>
+<p class="font-body-sm text-xs text-on-surface-variant mt-2 leading-normal">
+                  Laplacian variance computes sharpness metrics to confirm readability before text parsing.
+                </p>
+</div>
+</div>
+<!-- Stage 06 -->
+<div class="bg-surface-container-lowest p-5 rounded-xl border border-outline-variant/30 flex flex-col justify-between hover:border-outline transition-colors">
+<div>
+<div class="flex items-center justify-between mb-3">
+<span class="font-label-sm text-xs text-primary-container font-bold">STAGE 06</span>
+<div class="w-7 h-7 rounded-md bg-surface-container flex items-center justify-center text-primary">
+<svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewbox="0 0 24 24"><path d="M4 7V4h16v3M9 20h6M12 4v16"></path></svg>
+</div>
+</div>
+<h3 class="font-headline-sm text-base font-semibold text-on-surface">Optical Character Recognition (OCR)</h3>
+<p class="font-body-sm text-xs text-on-surface-variant mt-2 leading-normal">
+                  Deep neural text detection and character recognition transcribe localized glyphs into digital text.
+                </p>
+</div>
+</div>
+<!-- Stage 07 -->
+<div class="bg-surface-container-lowest p-5 rounded-xl border border-outline-variant/30 flex flex-col justify-between hover:border-outline transition-colors">
+<div>
+<div class="flex items-center justify-between mb-3">
+<span class="font-label-sm text-xs text-primary-container font-bold">STAGE 07</span>
+<div class="w-7 h-7 rounded-md bg-surface-container flex items-center justify-center text-primary">
+<svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewbox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><path d="M14 2v6h6M16 13H8M16 17H8M10 9H8"></path></svg>
+</div>
+</div>
+<h3 class="font-headline-sm text-base font-semibold text-on-surface">OCR Result Analysis</h3>
+<p class="font-body-sm text-xs text-on-surface-variant mt-2 leading-normal">
+                  Confidence score thresholding and bounding box coordinate mapping filter recognition outputs.
+                </p>
+</div>
+</div>
+<!-- Stage 08 -->
+<div class="bg-surface-container-lowest p-5 rounded-xl border border-outline-variant/30 flex flex-col justify-between hover:border-outline transition-colors">
+<div>
+<div class="flex items-center justify-between mb-3">
+<span class="font-label-sm text-xs text-primary font-bold">STAGE 08</span>
+<div class="w-7 h-7 rounded-md bg-surface-container flex items-center justify-center text-primary">
+<svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewbox="0 0 24 24"><rect height="18" rx="2" width="18" x="3" y="3"></rect><path d="M3 9h18M3 15h18M9 9v12"></path></svg>
+</div>
+</div>
+<h3 class="font-headline-sm text-base font-semibold text-on-surface">Document Structure Analysis</h3>
+<p class="font-body-sm text-xs text-on-surface-variant mt-2 leading-normal">
+                  Spatial layout clustering reconstructs logical headings, key-value pairs, and tabular content.
+                </p>
+</div>
+</div>
+<!-- Stage 09 -->
+<div class="bg-surface-container-lowest p-5 rounded-xl border border-outline-variant/30 flex flex-col justify-between hover:border-outline transition-colors">
+<div>
+<div class="flex items-center justify-between mb-3">
+<span class="font-label-sm text-xs text-error font-bold">STAGE 09</span>
+<div class="w-7 h-7 rounded-md bg-surface-container flex items-center justify-center text-error">
+<svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewbox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path><path d="M12 8v4M12 16h.01"></path></svg>
+</div>
+</div>
+<h3 class="font-headline-sm text-base font-semibold text-on-surface">Sensitive Information Detection</h3>
+<p class="font-body-sm text-xs text-on-surface-variant mt-2 leading-normal">
+                  Deterministic regular expression and structural pattern engines identify sensitive target fields.
+                </p>
+</div>
+</div>
+<!-- Stage 10 -->
+<div class="bg-surface-container-lowest p-5 rounded-xl border border-outline-variant/30 flex flex-col justify-between hover:border-outline transition-colors">
+<div>
+<div class="flex items-center justify-between mb-3">
+<span class="font-label-sm text-xs text-on-surface font-bold">STAGE 10</span>
+<div class="w-7 h-7 rounded-md bg-surface-container flex items-center justify-center text-on-surface">
+<svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewbox="0 0 24 24"><path d="M20 20H7L3 16C2 15 2 13 3 12L13 2L22 11L20 20Z"></path><path d="M11 4L20 13"></path></svg>
+</div>
+</div>
+<h3 class="font-headline-sm text-base font-semibold text-on-surface">Visual Redaction</h3>
+<p class="font-body-sm text-xs text-on-surface-variant mt-2 leading-normal">
+                  Solid opaque rectangle fills overwrite coordinate pixel arrays directly on the raster canvas.
+                </p>
+</div>
+</div>
+</div>
+</section>
+<!-- Technologies Stack (Strictly Real Stack) -->
+<section class="flex flex-col gap-6">
+<div class="border-b border-outline-variant/30 pb-3">
+<h2 class="font-label-md uppercase tracking-wider text-xs font-semibold text-primary">TECHNOLOGIES</h2>
+<p class="font-headline-md text-2xl font-semibold text-on-surface mt-1">Core Software Libraries</p>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
+<!-- Python -->
+<div class="bg-surface-container-lowest p-6 rounded-xl border border-outline-variant/30">
+<div class="w-10 h-10 rounded-lg bg-surface-container flex items-center justify-center text-primary mb-4">
+<svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewbox="0 0 24 24"><path d="m16 18 6-6-6-6M8 6l-6 6 6 6"></path></svg>
+</div>
+<h3 class="font-headline-sm text-lg font-semibold text-on-surface">Python</h3>
+<p class="font-body-md text-sm text-on-surface-variant mt-2 leading-relaxed">
+                Core runtime and deterministic processing orchestration across the complete pipeline lifecycle.
+              </p>
+</div>
+<!-- OpenCV -->
+<div class="bg-surface-container-lowest p-6 rounded-xl border border-outline-variant/30">
+<div class="w-10 h-10 rounded-lg bg-surface-container flex items-center justify-center text-secondary mb-4">
+<svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewbox="0 0 24 24"><circle cx="12" cy="12" r="10"></circle><path d="M12 2a7 7 0 1 0 7 7"></path></svg>
+</div>
+<h3 class="font-headline-sm text-lg font-semibold text-on-surface">OpenCV</h3>
+<p class="font-body-md text-sm text-on-surface-variant mt-2 leading-relaxed">
+                Computer vision transformations, edge detection, and morphological filtering algorithms.
+              </p>
+</div>
+<!-- NumPy -->
+<div class="bg-surface-container-lowest p-6 rounded-xl border border-outline-variant/30">
+<div class="w-10 h-10 rounded-lg bg-surface-container flex items-center justify-center text-primary mb-4">
+<svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewbox="0 0 24 24"><rect height="18" rx="2" width="18" x="3" y="3"></rect><path d="M3 9h18M3 15h18M9 3v18M15 3v18"></path></svg>
+</div>
+<h3 class="font-headline-sm text-lg font-semibold text-on-surface">NumPy</h3>
+<p class="font-body-md text-sm text-on-surface-variant mt-2 leading-relaxed">
+                Multidimensional matrix operations and coordinate geometry calculations on image arrays.
+              </p>
+</div>
+<!-- EasyOCR -->
+<div class="bg-surface-container-lowest p-6 rounded-xl border border-outline-variant/30">
+<div class="w-10 h-10 rounded-lg bg-surface-container flex items-center justify-center text-primary mb-4">
+<svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewbox="0 0 24 24"><path d="M2 12h20M7 12a5 5 0 0 1 5-5m0 10a5 5 0 0 1-5-5"></path></svg>
+</div>
+<h3 class="font-headline-sm text-lg font-semibold text-on-surface">EasyOCR</h3>
+<p class="font-body-md text-sm text-on-surface-variant mt-2 leading-relaxed">
+                Deep neural text recognition with CRAFT detector for accurate spatial text localization.
+              </p>
+</div>
+<!-- PyTorch -->
+<div class="bg-surface-container-lowest p-6 rounded-xl border border-outline-variant/30">
+<div class="w-10 h-10 rounded-lg bg-surface-container flex items-center justify-center text-primary mb-4">
+<svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewbox="0 0 24 24"><path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path></svg>
+</div>
+<h3 class="font-headline-sm text-lg font-semibold text-on-surface">PyTorch</h3>
+<p class="font-body-md text-sm text-on-surface-variant mt-2 leading-relaxed">
+                Inference framework for optical character recognition models with optimized tensor evaluation.
+              </p>
+</div>
+<!-- Torchvision -->
+<div class="bg-surface-container-lowest p-6 rounded-xl border border-outline-variant/30">
+<div class="w-10 h-10 rounded-lg bg-surface-container flex items-center justify-center text-secondary mb-4">
+<svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewbox="0 0 24 24"><rect height="18" rx="2" width="18" x="3" y="3"></rect><circle cx="8.5" cy="8.5" r="1.5"></circle><path d="m21 15-5-5L5 21"></path></svg>
+</div>
+<h3 class="font-headline-sm text-lg font-semibold text-on-surface">Torchvision</h3>
+<p class="font-body-md text-sm text-on-surface-variant mt-2 leading-relaxed">
+                Image tensor transforms and normalization routines ensuring uniform recognition inputs.
+              </p>
+</div>
+</div>
+</section>
+<!-- Privacy & Supported Sensitive Information Types -->
+<section class="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
+<!-- Supported Sensitive Information Types Card -->
+<div class="lg:col-span-7 bg-surface-container-lowest p-7 rounded-xl border border-outline-variant/30 flex flex-col gap-5">
+<div>
+<h2 class="font-label-md uppercase tracking-wider text-xs font-semibold text-primary">DETECTION TARGETS</h2>
+<h3 class="font-headline-sm text-xl font-semibold text-on-surface mt-1">Supported Sensitive Information Types</h3>
+<p class="font-body-sm text-sm text-on-surface-variant mt-1">
+                Standard syntactic patterns identified and prepared for visual masking:
+              </p>
+</div>
+<div class="flex flex-col gap-2.5">
+<!-- Item 1 -->
+<div class="flex items-center gap-3 p-3 rounded-lg bg-surface-container-low border border-outline-variant/20">
+<div class="w-8 h-8 rounded bg-surface-container flex items-center justify-center text-primary shrink-0">
+<svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewbox="0 0 24 24"><rect height="16" rx="2" width="20" x="2" y="4"></rect><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"></path></svg>
+</div>
+<div>
+<span class="font-title-md text-sm font-semibold text-on-surface block">Email addresses</span>
+<span class="font-body-sm text-xs text-on-surface-variant">Standard email address syntax across common domain structures</span>
+</div>
+</div>
+<!-- Item 2 -->
+<div class="flex items-center gap-3 p-3 rounded-lg bg-surface-container-low border border-outline-variant/20">
+<div class="w-8 h-8 rounded bg-surface-container flex items-center justify-center text-primary shrink-0">
+<svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewbox="0 0 24 24"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"></path></svg>
+</div>
+<div>
+<span class="font-title-md text-sm font-semibold text-on-surface block">Phone numbers</span>
+<span class="font-body-sm text-xs text-on-surface-variant">Standard regional, international, hyphenated, and parenthetical telephone formats</span>
+</div>
+</div>
+<!-- Item 3 -->
+<div class="flex items-center gap-3 p-3 rounded-lg bg-surface-container-low border border-outline-variant/20">
+<div class="w-8 h-8 rounded bg-surface-container flex items-center justify-center text-primary shrink-0">
+<svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewbox="0 0 24 24"><rect height="14" rx="2" width="18" x="3" y="5"></rect><circle cx="9" cy="12" r="2"></circle><path d="M15 10h2M15 14h2"></path></svg>
+</div>
+<div>
+<span class="font-title-md text-sm font-semibold text-on-surface block">Aadhaar-like identifiers (12 digits)</span>
+<span class="font-body-sm text-xs text-on-surface-variant">Continuous or space-delimited 12-digit identification patterns</span>
+</div>
+</div>
+<!-- Item 4 -->
+<div class="flex items-center gap-3 p-3 rounded-lg bg-surface-container-low border border-outline-variant/20">
+<div class="w-8 h-8 rounded bg-surface-container flex items-center justify-center text-primary shrink-0">
+<svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewbox="0 0 24 24"><rect height="14" rx="2" width="20" x="2" y="5"></rect><line x1="2" x2="22" y1="10" y2="10"></line></svg>
+</div>
+<div>
+<span class="font-title-md text-sm font-semibold text-on-surface block">Card-like sequences (16-digit payment card numbers)</span>
+<span class="font-body-sm text-xs text-on-surface-variant">16-digit segmented payment card numerical patterns</span>
+</div>
+</div>
+<!-- Item 5 -->
+<div class="flex items-center gap-3 p-3 rounded-lg bg-surface-container-low border border-outline-variant/20">
+<div class="w-8 h-8 rounded bg-surface-container flex items-center justify-center text-primary shrink-0">
+<svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewbox="0 0 24 24"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg>
+</div>
+<div>
+<span class="font-title-md text-sm font-semibold text-on-surface block">URLs &amp; web links</span>
+<span class="font-body-sm text-xs text-on-surface-variant">Uniform resource locators with standard http, https, or domain designations</span>
+</div>
+</div>
+</div>
+</div>
+<!-- Privacy & Security Card -->
+<div class="lg:col-span-5 bg-surface-container-lowest p-7 rounded-xl border border-outline-variant/30 flex flex-col justify-between h-full">
+<div>
+<div class="w-10 h-10 rounded-lg bg-surface-container flex items-center justify-center text-primary mb-4">
+<svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewbox="0 0 24 24"><rect height="11" rx="2" ry="2" width="18" x="3" y="11"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></svg>
+</div>
+<h2 class="font-label-md uppercase tracking-wider text-xs font-semibold text-primary">PRIVACY &amp; SECURITY</h2>
+<h3 class="font-headline-sm text-xl font-semibold text-on-surface mt-1">Local Processing &amp; Redaction</h3>
+<p class="font-body-md text-sm text-on-surface-variant mt-3 leading-relaxed">
+                Sensitive information is visually redacted using solid black masking regions. Original source images are preserved.
+              </p>
+</div>
+<div class="mt-6 pt-5 border-t border-outline-variant/30 flex items-start gap-3 bg-surface-container-low p-4 rounded-lg">
+<div class="w-5 h-5 rounded-full bg-secondary/10 flex items-center justify-center text-secondary shrink-0 mt-0.5">
+<svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" viewbox="0 0 24 24"><polyline points="20 6 9 17 4 12"></polyline></svg>
+</div>
+<p class="font-body-sm text-xs text-on-surface-variant leading-relaxed">
+                Your document is processed locally on this device. Generated results are stored locally.
+              </p>
+</div>
+</div>
+</section>
+</div>
+</div>
+</main>
+<!-- Footer -->
+<footer class="w-full bg-surface-container-lowest border-t border-outline-variant/30 py-5">
+<div class="max-w-7xl mx-auto px-6 flex flex-col sm:flex-row items-center justify-between gap-3 font-body-sm text-xs text-on-surface-variant">
+<div>DocSureAI · Built with Python, OpenCV, NumPy, EasyOCR, PyTorch &amp; Torchvision</div>
+<div class="flex items-center gap-6">
+<a class="hover:text-on-surface transition-colors" data-path="documentation" href="#">Documentation</a>
+<span class="text-outline/40">·</span>
+<a class="hover:text-on-surface transition-colors" data-path="privacy-policy" href="#">Privacy Policy</a>
+</div>
+</div>
+</footer>
+</body></html>

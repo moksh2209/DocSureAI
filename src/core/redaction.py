@@ -4,7 +4,7 @@ import logging
 from pathlib import Path
 import cv2
 import numpy as np
-from core.ocr_engine import perform_ocr
+from src.core.ocr_engine import perform_ocr
 
 logger = logging.getLogger(__name__)
 
