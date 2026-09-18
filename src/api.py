@@ -89,10 +89,12 @@ async def process_document(file: UploadFile = File(...)):
         if not any([quality, ocr_results, ocr_analysis, structure, sensitive_data, redaction]):
              raise HTTPException(status_code=500, detail="Pipeline completed but no output reports were found.")
 
-        # Determine best candidate confidence
+        # Determine best candidate confidence and enhanced image
         ocr_confidence = None
+        enhanced_image_name = None
         if ocr_analysis and "best_candidate" in ocr_analysis and ocr_analysis["best_candidate"]:
             ocr_confidence = ocr_analysis["best_candidate"].get("average_confidence")
+            enhanced_image_name = ocr_analysis["best_candidate"].get("image_name")
 
         response_data = {
             "success": True,
@@ -109,6 +111,7 @@ async def process_document(file: UploadFile = File(...)):
             "images": {
                 "original": "/outputs/document_original.jpg",
                 "scanned": "/outputs/document_scanned.jpg",
+                "enhanced": f"/outputs/{enhanced_image_name}" if enhanced_image_name else None,
                 "redacted": "/outputs/document_redacted.jpg"
             }
         }

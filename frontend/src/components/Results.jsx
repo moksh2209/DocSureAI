@@ -1,6 +1,8 @@
+import { useState } from 'react';
 const API_BASE = import.meta.env.VITE_API_BASE_URL;
 
 export default function Results({ data, onReset }) {
+  const [downloadMenuOpen, setDownloadMenuOpen] = useState(false);
   const { filename, quality, ocr, structure, sensitive_data, redaction, images } = data
 
   // Extract metric values
@@ -8,7 +10,9 @@ export default function Results({ data, onReset }) {
   const ocrConfidence = ocr?.confidence ?? '—'
 
   const sensitiveItems = sensitive_data?.detections?.length ?? sensitive_data?.total_detections ?? 0
-  const redactedRegions = redaction?.regions_redacted ?? redaction?.total_regions ?? 0
+  const redactedRegions = (redaction && typeof redaction.total_redacted_regions === 'number') 
+    ? redaction.total_redacted_regions 
+    : 0;
 
   // Extracted text
   const extractedText = ocr?.results?.results?.[0]?.extracted_text || ocr?.analysis?.best_candidate?.extracted_text || ''
@@ -19,6 +23,124 @@ export default function Results({ data, onReset }) {
 
   // Sensitive items table
   const detections = sensitive_data?.detections || []
+
+  const handleDownloadEnhanced = async (e) => {
+    e.preventDefault();
+    if (!images?.enhanced) return;
+    try {
+      const response = await fetch(`${API_BASE}${images.enhanced}`);
+      const blob = await response.blob();
+      const url = window.URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = images.enhanced.split('/').pop() || 'document_enhanced.jpg';
+      document.body.appendChild(a);
+      a.click();
+      a.remove();
+      window.URL.revokeObjectURL(url);
+    } catch (err) {
+      console.error('Download failed', err);
+      window.open(`${API_BASE}${images.enhanced}`, '_blank');
+    }
+  };
+
+  const handleViewReport = async () => {
+    try {
+      const res = await fetch(`${API_BASE}/outputs/sensitive_data_report.json`, { method: 'HEAD' });
+      if (!res.ok) throw new Error('Not found');
+      window.open(`${API_BASE}/outputs/sensitive_data_report.json`, '_blank');
+    } catch (err) {
+      alert("Detection report is unavailable.");
+    }
+  };
+
+  const handleViewRedacted = () => {
+    if (!images?.redacted) {
+      alert("Redacted document is unavailable.");
+      return;
+    }
+    window.open(`${API_BASE}${images.redacted}`, '_blank');
+  };
+
+  const handleDownloadEnhancedFile = async () => {
+    if (!images?.enhanced) return;
+    try {
+      const response = await fetch(`${API_BASE}${images.enhanced}`);
+      if (!response.ok) throw new Error("Network response was not ok");
+      const blob = await response.blob();
+      const url = window.URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = 'docsureai_enhanced_document.jpg';
+      document.body.appendChild(a);
+      a.click();
+      a.remove();
+      window.URL.revokeObjectURL(url);
+    } catch (err) {
+      console.error('Download failed', err);
+      alert("Failed to download the enhanced document. Please try again.");
+    }
+  };
+
+  const handleDownloadRedactedFile = async () => {
+    if (!images?.redacted) return;
+    try {
+      const response = await fetch(`${API_BASE}${images.redacted}`);
+      if (!response.ok) throw new Error("Network response was not ok");
+      const blob = await response.blob();
+      const url = window.URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = 'docsureai_redacted_document.jpg';
+      document.body.appendChild(a);
+      a.click();
+      a.remove();
+      window.URL.revokeObjectURL(url);
+    } catch (err) {
+      console.error('Download failed', err);
+      alert("Failed to download the redacted document. Please try again.");
+    }
+  };
+
+  const handleDownloadBoth = async () => {
+    await handleDownloadRedactedFile();
+    // small delay to ensure browser triggers both downloads correctly
+    setTimeout(() => {
+      handleDownloadEnhancedFile();
+    }, 500);
+  };
+
+  const handleDownloadRedacted = async (e) => {
+    e.preventDefault();
+    if (!images?.redacted) {
+      alert("Redacted document is unavailable for download.");
+      return;
+    }
+    await handleDownloadRedactedFile();
+    setDownloadMenuOpen(false);
+  };
+
+  const handleDownloadEnhancedBtn = async (e) => {
+    e.preventDefault();
+    if (!images?.enhanced) {
+      alert("Enhanced document is unavailable for download.");
+      return;
+    }
+    await handleDownloadEnhancedFile();
+    setDownloadMenuOpen(false);
+  };
+
+  const handleDownloadBothBtn = async (e) => {
+    e.preventDefault();
+    if (!images?.redacted && !images?.enhanced) {
+      alert("Documents are unavailable for download.");
+      return;
+    }
+    await handleDownloadBoth();
+    setDownloadMenuOpen(false);
+  };
+
+
 
   return (
     <div className="results-page">
@@ -44,26 +166,55 @@ export default function Results({ data, onReset }) {
             </div>
           </div>
           <div className="success-actions">
-            <button className="btn-outline" onClick={() => {
-              const el = document.getElementById('sensitive-section')
-              if (el) el.scrollIntoView({ behavior: 'smooth' })
-            }}>
+            <button className="btn-outline" onClick={handleViewReport}>
               <svg width="16" height="16" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24" strokeLinecap="round" strokeLinejoin="round">
                 <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" />
                 <polyline points="14 2 14 8 20 8" />
               </svg>
               View Detection Report
             </button>
-            <button className="btn-primary" onClick={() => {
-              const el = document.getElementById('comparison-section')
-              if (el) el.scrollIntoView({ behavior: 'smooth' })
-            }}>
+            <button className="btn-primary" onClick={handleViewRedacted}>
               <svg width="16" height="16" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24" strokeLinecap="round" strokeLinejoin="round">
                 <path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10-7Z" />
                 <circle cx="12" cy="12" r="3" />
               </svg>
               View Redacted Document
             </button>
+            <div style={{ position: 'relative', display: 'inline-block' }}>
+              <button 
+                className="btn-primary" 
+                onClick={() => setDownloadMenuOpen(!downloadMenuOpen)} 
+                style={{ background: 'var(--primary-container)', color: 'var(--on-primary-container)' }}
+              >
+                <svg width="16" height="16" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24" strokeLinecap="round" strokeLinejoin="round">
+                  <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
+                  <polyline points="7 10 12 15 17 10" />
+                  <line x1="12" y1="15" x2="12" y2="3" />
+                </svg>
+                Download Image
+                <svg width="14" height="14" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24" strokeLinecap="round" strokeLinejoin="round" style={{ marginLeft: 4 }}>
+                  <polyline points="6 9 12 15 18 9" />
+                </svg>
+              </button>
+              {downloadMenuOpen && (
+                <div style={{
+                  position: 'absolute', top: '100%', right: 0, marginTop: 8,
+                  background: 'var(--surface)', border: '1px solid var(--outline-variant)',
+                  borderRadius: 8, boxShadow: '0 4px 12px rgba(0,0,0,0.1)',
+                  zIndex: 10, minWidth: 200, padding: 4, display: 'flex', flexDirection: 'column', gap: 2
+                }}>
+                  <button onClick={handleDownloadRedacted} style={{ textAlign: 'left', padding: '8px 12px', background: 'transparent', border: 'none', cursor: 'pointer', borderRadius: 4, fontSize: 13, fontFamily: 'inherit' }} onMouseOver={(e)=>e.currentTarget.style.background='var(--surface-container)'} onMouseOut={(e)=>e.currentTarget.style.background='transparent'}>
+                    Download Redacted Image
+                  </button>
+                  <button onClick={handleDownloadEnhancedBtn} style={{ textAlign: 'left', padding: '8px 12px', background: 'transparent', border: 'none', cursor: 'pointer', borderRadius: 4, fontSize: 13, fontFamily: 'inherit' }} onMouseOver={(e)=>e.currentTarget.style.background='var(--surface-container)'} onMouseOut={(e)=>e.currentTarget.style.background='transparent'}>
+                    Download Enhanced Image
+                  </button>
+                  <button onClick={handleDownloadBothBtn} style={{ textAlign: 'left', padding: '8px 12px', background: 'transparent', border: 'none', cursor: 'pointer', borderRadius: 4, fontSize: 13, fontFamily: 'inherit', borderTop: '1px solid var(--outline-variant)', marginTop: 2 }} onMouseOver={(e)=>e.currentTarget.style.background='var(--surface-container)'} onMouseOut={(e)=>e.currentTarget.style.background='transparent'}>
+                    Download Both
+                  </button>
+                </div>
+              )}
+            </div>
           </div>
         </div>
       </div>
@@ -188,7 +339,26 @@ export default function Results({ data, onReset }) {
               <span>Original resolution preview</span>
             </div>
           </div>
-
+          {/* Enhanced */}
+          {images?.enhanced && (
+            <div className="doc-panel">
+              <div className="doc-panel-header">
+                <div className="doc-panel-title">
+                  <div className="doc-panel-dot" style={{ background: '#3b82f6' }} />
+                  <span>ENHANCED DOCUMENT</span>
+                </div>
+              </div>
+              <div className="doc-panel-canvas">
+                <img src={`${API_BASE}${images.enhanced}`} alt="Enhanced Document" onError={(e) => { e.target.style.display = 'none' }} />
+              </div>
+              <div className="doc-panel-footer" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                <span>Optimized for OCR</span>
+                <button onClick={handleDownloadEnhanced} style={{ background: 'transparent', border: '1px solid #d1d5db', borderRadius: 4, padding: '2px 8px', fontSize: 11, cursor: 'pointer', fontFamily: 'inherit' }}>
+                  Download Enhanced Image
+                </button>
+              </div>
+            </div>
+          )}
           {/* Redacted */}
           <div className="doc-panel">
             <div className="doc-panel-header">
