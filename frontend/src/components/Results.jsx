@@ -9,7 +9,7 @@ export default function Results({ data, onReset }) {
   const qualityScore = quality?.overall_score ?? quality?.quality_score ?? '—'
   const ocrConfidence = ocr?.confidence ?? '—'
 
-  const sensitiveItems = sensitive_data?.detections?.length ?? sensitive_data?.total_detections ?? 0
+  const sensitiveItems = sensitive_data?.items?.length ?? sensitive_data?.total_sensitive_items ?? 0
   const redactedRegions = (redaction && typeof redaction.total_redacted_regions === 'number') 
     ? redaction.total_redacted_regions 
     : 0;
@@ -22,7 +22,7 @@ export default function Results({ data, onReset }) {
   const docTitle = structure?.document_title || '(not detected)'
 
   // Sensitive items table
-  const detections = sensitive_data?.detections || []
+  const detections = sensitive_data?.items || sensitive_data?.detections || []
 
   const handleDownloadEnhanced = async (e) => {
     e.preventDefault();
