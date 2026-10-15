@@ -20,7 +20,7 @@ function App() {
     formData.append('file', selectedFile);
 
     try {
-      const apiUrl = import.meta.env.VITE_API_BASE_URL;
+      const apiUrl = import.meta.env.VITE_API_BASE_URL || '';
       const response = await fetch(`${apiUrl}/api/process`, {
         method: 'POST',
         body: formData,

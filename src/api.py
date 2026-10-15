@@ -2,7 +2,7 @@ import os
 import shutil
 from pathlib import Path
 from fastapi import FastAPI, UploadFile, File, HTTPException
-from fastapi.responses import JSONResponse
+from fastapi.responses import FileResponse, JSONResponse
 from fastapi.staticfiles import StaticFiles
 from fastapi.middleware.cors import CORSMiddleware
 import json
@@ -24,10 +24,15 @@ DATA_DIR = PROJECT_ROOT / "data"
 INPUT_DIR = DATA_DIR / "input"
 OUTPUT_DIR = DATA_DIR / "output"
 INPUT_FILE = INPUT_DIR / "document.jpg"
+FRONTEND_DIST_DIR = PROJECT_ROOT / "frontend" / "dist"
 
 # Ensure output directory exists for static file serving
 OUTPUT_DIR.mkdir(parents=True, exist_ok=True)
 app.mount("/outputs", StaticFiles(directory=str(OUTPUT_DIR)), name="outputs")
+
+ASSETS_DIR = FRONTEND_DIST_DIR / "assets"
+if ASSETS_DIR.is_dir():
+    app.mount("/assets", StaticFiles(directory=str(ASSETS_DIR)), name="assets")
 
 # Global processing lock (single-user constraint)
 _is_processing = False
@@ -119,3 +124,23 @@ async def process_document(file: UploadFile = File(...)):
 
     finally:
         _is_processing = False
+
+
+@app.get("/{full_path:path}", include_in_schema=False)
+async def serve_frontend(full_path: str):
+    if full_path == "api" or full_path.startswith("api/"):
+        raise HTTPException(status_code=404, detail="API endpoint not found.")
+    if full_path == "outputs" or full_path.startswith("outputs/"):
+        raise HTTPException(status_code=404, detail="Output file not found.")
+
+    frontend_root = FRONTEND_DIST_DIR.resolve()
+    requested_file = (frontend_root / full_path).resolve()
+    if not requested_file.is_relative_to(frontend_root):
+        raise HTTPException(status_code=404, detail="Frontend file not found.")
+    if requested_file.is_file():
+        return FileResponse(requested_file)
+
+    index_file = frontend_root / "index.html"
+    if not index_file.is_file():
+        raise HTTPException(status_code=404, detail="Frontend build not found.")
+    return FileResponse(index_file)
